@@ -1,25 +1,9 @@
 //visual functions
 
-function startMen() {
-  Menu = Men
-  imageMode(CENTER)
-  image(Menu, X / 2, Y / 2, X, Y)
-}
 
 function scene() {
   imageMode(CORNER)
   image(Img, backX, 0, X * 1.95, seg1)
-  if (action === "fall") {
-    knock = Falling
-  }
-  else if (knockerOn) {
-    knock = KnockerUp
-  }
-  else {
-    knock = Knocker
-  }
-  image(knock, backX, 0, X * 1.95, seg1)
-  image(strangeBug, backX + 1500, 180, 50, 50)
 }
 
 function blockOut() {
@@ -86,8 +70,7 @@ function actionGrid() {
 
 function character() {
   imageMode(CENTER)
-  image(capitan, backX + 1250, Y / 3, 350, 350)
-  Chara = CharaStand
+ Chara = CharaStand
   if (actionDo) {
     if (direction === -1) {
       Chara = WalkLeft
@@ -98,13 +81,13 @@ function character() {
   }
   else if (!actionDo) {
     if (action2 === "look back") {
-      if (dist(globalDestX, 0, globalPosX, 0) <= 4) {
-        Chara = BackLook
+       if(dist(globalDestX, 0, globalPosX, 0) <= 4){
+         Chara = BackLook
+       } 
+    }
+    else if(direction === -1){
+Chara = StandLeft
       }
-    }
-    else if (direction === -1) {
-      Chara = StandLeft
-    }
     else {
       Chara = CharaStand
     }
@@ -112,181 +95,69 @@ function character() {
   image(Shadow, playerX + 10, Y / 3 + 80, 330, 330)
   image(Chara, playerX, Y / 3 + 50, 330, 330)
 
-  if (gamePlay === "action") {
-    BowBoyPose = BowBoy
-  }
-  image(Shadow, backX + 2270 + 10, Y / 3 + 20, 250, 250)
-  image(BowBoyPose, backX + 2270, Y / 3 + 30, 250, 250)
-
+  if(gamePlay === "action"){
+BowBoyPose = BowBoy
+  }    
+  image(Shadow, backX+ 2270+10, Y/3 + 20, 250, 250)
+  image(BowBoyPose, backX + 2270, Y/3 + 30, 250, 250)
 }
 
 
 
 
 
-function CharaTalk() {
+function CharaTalk(){  
   textSize(50)
-  if (tick === 0) {
+  if(tick === 0){
     CharaText = " "
   }
-  else if (action === "note" && i <= 3) {
-    if (actionChoice === "Push" || actionChoice === "Pull") {
-      if (note === " short pirate" || note === " fancy-looking pirate") {
-        CharaText = "Aim to maim, not to inconvenience"
+    else if(action === "note"){
+      if(actionChoice === "Push" || actionChoice === "Pull"){
+        if(itemChoice === " short pirate" || itemChoice === " fancy-looking pirate"){
+          CharaText = "That would be rude"
+        }
+        else if( itemChoice !== " "){
+          CharaText = "It wont budge"
+        }
       }
-      else if (note === " caution tape" && i < 4) {
-        CharaText = " meememe        No, thats there for a reason"
-      }
-      else if (note === " strange bug") {
-        CharaText = "Nah"
-      }
-      else if (note !== " ") {
-        CharaText = "It wont budge"
+      else if(actionChoice === "Look at"){
+        if(itemChoice === " fancy-looking pirate"){
+          Charatext = " He looks pretty official"
+        }
+        else if(itemChoice === " short pirate"){
+          CharaText = "I wonder if he's compensating for his terrible personality"
+        }
       }
     }
-    else if (actionChoice === "Look at") {
-      if (note === " fancy-looking pirate") {
-        CharaText = "He looks pretty official"
-        console.log("yes")
-      }
-      else if (note === " short pirate") {
-        CharaText = "I wonder if the bow is his copium"
-      }
-      else if (note === " caution tape") {
-        if (i < 3) {
-          CharaText = ".memememememmemememem        Caution: this section of the game doesnt exist yet"
-        }
-        else {
-          CharaText = "mememe              I wonder what that means"
-        }
-      }
-      else if (note === " ship") {
-        CharaText = "I really need to get on that"
-      }
-      else if (note === " shack door") {
-        CharaText = "Looks fairy sturdy"
-      }
-      else if (note === " door knocker") {
-        if (knockerOn) {
-          CharaText = "A door knocker. Used to knock on doors"
-        }
-        else {
-          textSize(43)
-          CharaText = "A door - well, I suppose its an anything knocker now"
+  else{
+    CharaText = " "
+  }
+  fill("#9e1f09")
+  stroke("#531d19")
 
-        }
-      }
-      else if (note === " vending machine") {
-        CharaText = "A Grog machine, with 3 new flavours!"
-      }
-      else if (note === " strange bug") {
-        CharaText = "Looks like theres a bug in the game!"
-      }
-    }
-    else if (actionChoice === "Close") {
-      if (note === " caution tape" && i < 3) {
-        CharaText = "meme      That doesn't need closing"
-      }
-      else if (note === " fancy-looking pirate" || note === " short pirate" || note === " strange bug") {
-        CharaText = "How would I close that?"
-      }
-      else {
-        CharaText = "That doesnt need closing"
-      }
-    }
-    else if (actionChoice === "Open") {
-      if (note === " caution tape" && i < 3) {
-        CharaText = "meme      That doesn't need opening"
-      }
-      else if (note === " fancy-looking pirate" || note === " short pirate" || note === " strange bug") {
-        CharaText = "How would I open that?"
-      }
-      else if (note === " shack door") {
-        CharaText = "It won't budge"
-      }
-      else {
-        CharaText = "That doesnt need opening"
-      }
-    }
-    else if (actionChoice === "Give") {
-      textSize(40)
-      CharaText = "I'm sure I want to part with it just yet"
-    }
-    else if (actionChoice === "Talk to") {
-      if (note !== " fancy-looking pirate" && note !== " short pirate") {
-        CharaText = "I'd rather not"
-      }
-      else if (note === " fancy-looking pirate") {
-        if (i <= 1) {
-          CharaText = "Hello?"
-        }
-        else if (i >= 3) {
-          CharaText = "Okay, bye"
-        }
-      }
-      else if (note === " short pirate") {
-        CharaText = "He doesn't seem helpful"
-      }
-    }
-    else if (actionChoice === "Pick up") {
-      if (note === " short pirate" || note === " fancy-looking pirate") {
-        CharaText = "Aim to maim, not to inconvenience"
-      }
-      else if (note === " door knocker") {
-        CharaText = "It's on the door, why would I?"
-      }
-      else if (note === " strange bug") {
-        CharaText = "I dont wan't it squirming in my pockets"
-      }
-      else {
-        CharaText = "I'd rather not"
-      }
-    }
-    else if (actionChoice === "Use") {
-      if (note === " shack door") {
-        CharaText = "It won't budge"
-      }
-      else if (note === " vending machine") {
-        CharaText = "No thanks, I'm nearing 2 months clean"
-      }
-      else if (note === " ship") {
-        CharaText = "I need to get on it first"
-      }
-      else {
-        CharaText = "How would I use that?"
-      }
-    }
-  }
-  else {
-    CharaText = " "
-    rese()
-  }
-  fill("#f7d588")
-  stroke("#510e0e")
-  strokeWeight(2)
   text(CharaText, playerX - 10 * direction, Y / 5)
 }
 
-function othersTalk() {
+function othersTalk(){
   textSize(40)
-  boySay = " "
-  if (action3 === "BowBoy chat" && tick === 1) {
-    if (i >= 2 && i <= 4) {
+  boySay = " " 
+  if(action3 === "BowBoy chat" && tick === 1){
+    if(i >= 2 && i <= 4){
       boySay = "You're not the captain!                 .. "
     }
-    else if (i <= 2) {
-      boySay = "Go away!"
-    }
-    else {
+      else if(i <= 2){
+        boySay = "Go away!"
+      } 
+    else{
       boySay = "  "
     }
-  }
-  else {
-    boySay = " "
-  }
-  fill("pink")
+  } 
+  else{
+      boySay = " "
+    }
+fill("pink")
   stroke("red")
-  text(boySay, backX + 2280, Y / 5)
+  text(boySay, backX+2280, Y / 5)
 }
 
 
@@ -304,7 +175,7 @@ function check() {
   }
   if (mouseY > Y * 3 / 4 && mouseY < Y) {
     if (gamePlay === "action") {
-      if (mouseX < X / 3) {
+      if (mouseX < Xseg1) {
         screenSector = "actionGrid"
       }
       else if (mouseX > Xseg1) {
@@ -358,62 +229,48 @@ function check() {
     if (actionOrder === 0) {
       actionChoice = "Walk to"
     }
-    if (!actionDo) {
+    if (!actionDo){
       if (mouseX <= backX + 250) {
         itemChoice = " caution tape"
       }
-      else if (knockerOn && mouseX >= backX + 800
-          && mouseX <= backX + 890
-          && mouseY <= 225
-          && mouseY >= 150) {
-          itemChoice = " door knocker"
-        }
-        else if(!knockerOn && mouseX >= backX + 1100 && mouseX <= backX + 1190 && mouseY >= 450 && mouseY <= 500){
-            itemChoice = " door knocker"
-        }
-      else if (mouseX >= backX + 757
-        && mouseX <= backX + 965
-        && mouseY <= 430
-        && mouseY >= 110) {
+      else if (mouseX >= backX + 800 && mouseX <= backX + 890 && mouseY <= 225 && mouseY >= 150) {
+        itemChoice = " door knocker"
+      }
+      else if (mouseX >= backX + 757 && mouseX <= backX + 965 && mouseY <= 430 && mouseY >= 110) {
         itemChoice = " shack door"
       }
-      else if (mouseX >= backX + 1160
-        && mouseY >= Y / 6
-        && mouseX <= backX + 1360
-        && mouseY <= Y / 2) {
-        itemChoice = " fancy-looking pirate"
-      }
-      else if (mouseX >= backX + 1162
-        && mouseY >= 40
-        && mouseX <= backX + 1370
-        && mouseY <= 350) {
+        else if(mouseX >= backX + 1160 && mouseY >= Y / 6 && mouseX <= backX + 1360 && mouseY <= Y /2){
+          itemChoice = " fancy-looking pirate"
+        }
+      else if (mouseX >= backX + 1162 && mouseY >= 40 && mouseX <= backX + 1370 && mouseY <= 350) {
         itemChoice = " vending machine"
       }
-      else if (mouseX >= backX + 2180
-        && mouseX <= backX + 2340
-        && mouseY >= Y / 3 - 100
-        && mouseY <= Y / 2 + 50) {
-        itemChoice = " short pirate"
-      }
-      else if (mouseX >= backX + 1970) {
-        itemChoice = " ship"
-      }
-      else if (mouseX >= backX + 1500 && mouseX <= backX + 1550 && mouseY >= 170 && mouseY <= 230) {
-        itemChoice = " strange bug"
-      }
+        else if(mouseX >= backX+ 2180 && mouseX <= backX + 2340 && mouseY >= Y / 3 - 100 && mouseY <= Y/2 + 50){
+          itemChoice = " short pirate"
+        }
+        else if(mouseX >= backX + 1970){
+          itemChoice = " ship"
+        }
       else {
         itemChoice = " "
       }
+  }
+  }
+  
+  if (actionOrder === 0) {
+    if (actionChoice === "Walk to") {
+actionValid = true
+      walkTo = true
+    }
+    else{
+      walkTo = false
     }
   }
+  else if(actionOrder === 2){
 
-  if (actionChoice === "Walk to") {
-    actionValid = true
-    walkTo = true
-  } else {
-    walkTo = false
-  }
 }
+}
+
 
 
 function checkKey() {
@@ -444,7 +301,7 @@ function checkKey() {
   }
 }
 
-function rese() {
+function reset(){
   action = " "
   action2 = " "
   action3 = " "

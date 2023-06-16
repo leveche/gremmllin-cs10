@@ -63,10 +63,9 @@ let chatTo = " "
 let screenSector;
 let doAct = false
 let captainPirate = " well-dressed pirate"
-let knockerOn = false
+let knockerOn = true
 let walkTo = true
 let CharaText = " test"
-let note;
 let boySay = " "
 
 //timer variabes

@@ -2,11 +2,6 @@ function preload() {
   // photo = loadImage("Assets/Background/photo.png")
   // tree = loadImage("Assets/Background/tree.png")
   doc = loadImage("Assets/Background/Background2.jpeg")
-  Men = loadImage("Assets/Background/StartMen1.png")
-  MenuCheck = loadImage("Assets/Background/StartMenCheck.png")
-  KnockerUp = loadImage("Assets/Background/knockerUp.png")
-  Falling = loadImage("Assets/Background/Falling.gif")
-  Knocker = loadImage("Assets/Background/Knocker.png")
   CharaWalk = loadImage("Assets/MC/RightWalk.gif")
   CharaStand = loadImage("Assets/MC/CharaStand.png")
   StandLeft = loadImage("Assets/MC/StandLeft.png")
@@ -16,15 +11,6 @@ function preload() {
 
   //bg characters and items
   BowBoy = loadImage("Assets/Bgcharacters/BowBoy.png")
-  capitan = loadImage("Assets/Bgcharacters/Capitan.png")
-  kapitanBang = loadImage("Assets/Bgcharacters/CapitanBang.gif")
-  pile = loadImage("Assets/Bgcharacters/Capitanjack.png")
-  groundHat = loadImage("Assets/Bgcharacters/Hat.png")
-  strangeBug = 
-    loadImage("Assets/Bgcharacters/Bug.png")
-
-  Hatvent = loadImage("Assets/inventory/Hatinvent.png")
-  Knockvent = loadImage("Assets/inventory/Knockinvent.png")
 
   bgSong = loadSound("Assets/Background/BGsong.mp3");
 }
@@ -36,57 +22,40 @@ function setup() {
   actionSeg1 = actionChoice
   Chara = CharaStand
   BowBoyPose = BowBoy
+ 
 }
 
 
 function mouseClicked() {
-  if(!bgSong.isPlaying()){
-    bgSong.play()
-  }
-  console.log(mouseX + " " + mouseY)
-  
-    if(gamePlay === "menu"){
-    if(mouseX >= 235 && mouseX <= 435 && mouseY >= 600 && mouseY <= 725){
-      tick = 2
-    }
-    }
-  else if(gamePlay === "action"){
-    if(tick === 1){
-      rese()
-    }
-    console.log(mouseX.toFixed(0) + "   " + mouseY.toFixed(0))
-    check()
-    console.log(screenSector + " " + actionChoice + " " + actionOrder)
+if(!bgSong.isPlaying()){
+  bgSong.play()
+}
 
-    if (actionOrder === 0) {
-      if (screenSector === "actionGrid") {
-        actionOrder = 1
-        actionSeg1 = actionSeg0
-        actionValid = true
-      }
-      else if(itemChoice === " short pirate"){
-        action3 = "BowBoy chat"
-     }
+  
+  if(tick === 1){
+    tick = 0
+    i = 0
+    action = " "
+    action2 = " "
+    action3 = " "
+  }
+  if(gamePlay === "action"){
+  console.log(mouseX.toFixed(0) + "   " + mouseY.toFixed(0))
+  check()
+  console.log(screenSector + " " + actionChoice + " " + actionOrder)
+
+  if (actionOrder === 0) {
+    if (screenSector == "actionGrid") {
+      actionOrder = 1
+      actionSeg1 = actionSeg0
+
     }
-    if (actionOrder === 1){
-      if (screenSector === "playworld"){
-        if (itemChoice === " "){
-          actionOrder = 0
-        }
-        else if (actionChoice === "Use") {
-          if (itemChoice === " door knocker" && knockerOn){
+  }
+  else if(actionOrder === 1){
+    if(screenSector === "playworld"){
+        if (actionChoice === "Use") {
+          if(itemChoice === "door knocker"){
             actionValid = true
-              doAct = true
-            action = "knock"
-          }
-            else if(inventChoice === " door knocker"){
-              actionSeg2 = itemChoice
-              actionOrder = 2
-            }
-          else{
-            actionValid = true
-            doAct = true
-            action = "note"
           }
         }
         else if (actionChoice === "Push") {
@@ -94,107 +63,113 @@ function mouseClicked() {
             actionValid = true
             doAct = true
             action = "note"
-           }
+          }
         }
         else if (actionChoice === "Open") {
-          actionValid = true
-          doAct = true
-          action = "note"
+          if(itemChoice !== " "){
+            actionValid = true
+            doAct = true
+            action = "note"
+          }
         }
         else if (actionChoice === "Close") {
-          walkTo = true
-          doAct = true
-          action = "note"
+          if(itemChoice !== " "){
+            walkTo = true
+            doAct = true
+            action = "note"
+          }
         }
-        else if (actionChoice === "Give" && inventchoice !== " ") {
-          actionOrder = 2
-          actionSeg2 = inventChoice
+        else if (actionChoice === "Give") {
+          
         }
         else if (actionChoice === "Talk to"){
-          if(   itemChoice === " short pirate"){
+          if(itemChoice === " short pirate" || itemChoice === " fancy-looking pirate"){
             actionValid = true
             doAct = true
             action = "chat"
           }
-          else if(itemChoice === " fancy-looking pirate"){
+    }
+        else if(actionChoice === "Pull"){
+      if(itemChoice !== " "){
             actionValid = true
             doAct = true
             action = "note"
           }
-          else{
-           actionValid = true
+    }
+        else if(actionChoice === "Look at"){
+      if(itemChoice !== " "){
+            actionValid = true
             doAct = true
             action = "note"
           }
-        }
-        else if (actionChoice === "Pull"){
-          actionValid = true
-          doAct = true
-          action = "note"
-        }
-        else if(actionChoice === "Look at"){
-          actionValid = true
-          doAct = true
-          action = "note"
-        }
+    }
         else if(actionChoice === "Pick up"){
-          actionValid = true
-          doAct = true
-          if(   itemChoice === "doorKnocker" 
-             && !knockerOn){
-            action = "knockpick"
-          } 
-          else{
-            action = "note"
-          }
+      if(itemChoice !== " "){
+        actionValid = true
+        if(itemChoice === "doorKnocker" && !knockerOn){
+          
+        }
+        else{
+          action = "note"
         }
       }
-      else {
-        actionValid = false
+    }
+  }
+      else{
+    actionValid = false
+  }
+      if(actionValid){
+        walkTo = true
       }
-        if(actionValid){
-          walkTo = true
-      }
-    } 
-      else if(actionOrder === 2){
-        
-      }
-    else if (screenSector === "inventory") {
-        if(actionValid){
+    }
+    else if(playworld === "inventory"){
+      if(actionValid){
         
       }
     }
   }
   
   if (walkTo) {
+          if(itemChoice === " short pirate" && actionChoice === "Walk to"){
+          doAct = true
+          action = " "
+          action2 = " "
+          action3 = "BowBoy chat"
+        }
 
     playerDestX = mouseX
-    //for how far on the screen she can go
-    if (playerDestX >= backX + 2100) {
-      playerDestX = backX + 2100
-    } else if (playerDestX <= backX + 100) {
-        playerDestX = backX + 100
-    }
-    //for when certain triggers occur
-    globalDestX = playerDestX - backX;
-  }
+        //for how far on the screen she can go
+        if (playerDestX >= backX + 2100) {
+          playerDestX = backX + 2100
+        }
+        else if (playerDestX <= backX + 100) {
+          playerDestX = backX + 100
+        }
+        //for when certain triggers occur
+
+        globalDestX = playerDestX - backX;
+      }
 
        
-   // if(!actionValid){
-   //      actionOrder = 0
-   //      actionChoice = "Walk to"
+   if(!actionValid){
+        actionOrder = 0
+        actionChoice = "Walk to"
      
-   //    }
+      }
   
   // if (mouseX <= backX + 250) {
   //   actionSeg2 = " caution tape"
   // }
   
-  else if(gamePlay === "chat"){    
+  else if(gamePlay === "chat"){
+    
   }
-  else if(gamePlay === "cutscene"){   
+  else if(gamePlay === "cutscene"){
+      
   }
-note = itemChoice
+  else if(gamePlay === "menu"){
+    
+  }
 }
 
 function keyPressed() {
@@ -205,7 +180,6 @@ function keyPressed() {
         actionSeg0 = keyChoice
         actionOrder = 1
         actionSeg1 = actionSeg0
-        actionChoice = keyChoice
       }
     }
     else if(key = "b"){
@@ -216,65 +190,30 @@ function keyPressed() {
 
 function draw() {
 
-  console.log(tick + " " + i)
+  console.log(doAct + action + action2 + action3)
   
   var timeElapsed = millis() - endTime;
-  if (timeElapsed > 1000) {
+    if (timeElapsed > 1000) {
     console.log(i + " " + tick);
-    endTime = millis();
-    if(tick >= 1){
-      i++;
+      endTime = millis()
+if(tick >= 1){
+  i++;
+}
     }
-  }
   
   check()
   checkKey()
-  if(gamePlay === "menu"){
-    startMen()
-    if(tick === 2){
-      if( i <= 1){
-        fill("#d0bdaf")
-        stroke("#6796b0")
-        circle(305, 650, 100)
-      } else {
-        gamePlay = "cutscene"
-        i = 0
-      }
-    }
-  } 
-  else if(gamePlay === "cutscene"){
-    if(knockerOn){
-    playerX = backX + 2100
-    playerDestX = backX + 1700
-    blockOut()
-    scene()
-    interact()
-    // lines()
-    character()
-    textSize(50)
-    fill("pink")
-    stroke("red")
-    textAlign(CENTER)
-    if ( i < 2){
-      text("Hey!", backX+2280, Y / 5)
-    } else if(i  < 4){
-      text("We dont's leaves 'till Captain comes back!        mememememememme ."
-           , backX + 2300, Y/5)
-    }
-      }
-    else {
-      gamePlay = "action"
-      i = 0
-      tick = 0
-    } 
-  }
-  else {
-    blockOut()
-    scene()
-    interact()
-    // lines()
-    character()
-    globalPosX = playerX - backX;
+  blockOut()
+  scene()
+  interact()
+  // lines()
+  rectMode(CORNER)
+  fill("red")
+  rect(backX + 1160, Y / 6, 200, Y /3)
+  character()
+
+  globalPosX = playerX - backX;
+  // console.log(globalPosX + ", " + globalDestX + ", " + playerX + ", " + actionValid);
 
     if (playerDestX - playerX > 0) direction = 1;
     if (playerDestX - playerX < 0) direction = -1;
@@ -283,59 +222,66 @@ function draw() {
       actionDo = true
     }
   
-    if (   dist(playerX, 0, playerDestX, 0) > 10 
-        && dist(globalDestX, 0, globalPosX, 0) > 10) {
+  if (dist(playerX, 0, playerDestX, 0) > 10 && dist(globalDestX, 0, globalPosX, 0) > 10) {
     
-  // if(walkTo) {
+  if(walkTo){
     
     //situtation where we move the player
-    if (   playerX >= 530 
-        && playerX <= width - 530) {
-      playerX += playerSpeed * direction;
-    } else if (   playerX <= 530 
-               && backX < -10
-               && direction < 0) {
-        backX += -1 * playerSpeed * direction
-    } else if (   playerX >= 570
-               && backX > -1200
-               && direction > 0) {
-        backX += -1 * playerSpeed * direction
-    } else {
+    if (playerX >= 530 && playerX <= width - 530) {
       playerX += playerSpeed * direction;
     }
-  //}
-} 
+      
+     else if (playerX <= 530 && backX < -10 && direction < 0) {
+      backX += -1 * playerSpeed * direction
+    }
+      
+    else if (playerX >= 570 && backX > -1200 && direction > 0) {
+      backX += -1 * playerSpeed * direction
+    }
+      
     else {
+      playerX += playerSpeed * direction;
+    }
+    
+  }
+  }
+  else {
     actionDo = false
-    if(doAct){
+    if(doAct){      
       if(tick === 0){
-        tick = 1
-        if(action3 === "BowBoy chat"){
-          if(i > 4){
-            rese()
-          }
+        tick = 1 
+    if(action3 === "BowBoy chat"){
+      if(i > 4){
+        reset()
         }
-      if(action === "note"){
-        if(i >= 5){
-          rese() 
-          }
-        }
-        else if(action === "knock"){
-          if(i <2){
-            action = "fall"
-          }
+      }
+    if(action === "note"){
+      if(i >= 5){
+       reset() 
       }
     }
-    if(   actionChoice === "Talk to"
-       && actionOrder >1 ){
-        gamePlay = "chat"
-    }
+  }
+
+  }
+    if(actionChoice === "Talk to" && actionOrder >1 ){
+      gamePlay = "chat"
+      if(itemChoice === " fancy-looking pirate"){
+        chatTo = "capitan"
+      }
+      else if(itemChoice === " short pirate"){
+        chatTo = "BowBoy"
       }
     }
-  CharaTalk()
-  othersTalk()
+
+  }
+
   
-}
+
+          
+          
+CharaTalk()
+othersTalk()
+
 }
 
 function interact() {
@@ -398,3 +344,4 @@ function interact() {
   strokeWeight(3)
   line(0, seg1, X, seg1)
 }
+
